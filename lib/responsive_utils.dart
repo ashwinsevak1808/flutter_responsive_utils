@@ -1,7 +1,4 @@
 library responsive_utils;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/linear_widget.dart';
+export 'src/linear_direction.dart';
