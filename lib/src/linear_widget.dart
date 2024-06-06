@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_utils/src/linear_direction.dart';
+import 'package:web_utility/web_utility.dart';
+
 
 /// A Flutter widget that displays a list of widgets in a linear layout (row or column).
 ///
