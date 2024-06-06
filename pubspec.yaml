@@ -1,7 +1,7 @@
 name: responsive_utils
 description: "A comprehensive utility package for creating responsive UIs in Flutter."
 version: 0.0.1
-homepage: "https://github.com/ashwinsevak/responsive_utils" # Replace this URL with your package's homepage URL
+homepage: "https://github.com/ashwinsevak1808/flutter_responsive_utils" # Replace this URL with your package's homepage URL
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
@@ -17,8 +17,8 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 # Metadata for the pub.dev
-repository: "https://github.com/ashwinsevak/responsive_utils" # Replace with your repository URL
-issue_tracker: "https://github.com/ashwinsevak/responsive_utils/issues" # Replace with your issue tracker URL
+repository: "https://github.com/ashwinsevak1808/flutter_responsive_utils" # Replace with your repository URL
+issue_tracker: "https://github.com/ashwinsevak1808/flutter_responsive_utils/issues" # Replace with your issue tracker URL
 
 # Flutter-specific configuration
 
@@ -52,7 +52,7 @@ categories:
   - UI components
 
 # Links to documentation
-documentation: "https://github.com/ashwinsevak/responsive_utils/wiki" # Replace with your documentation URL
+documentation: "https://github.com/ashwinsevak1808/flutter_responsive_utils/wiki" # Replace with your documentation URL
 
 # License details
 # Include the license file in your package
