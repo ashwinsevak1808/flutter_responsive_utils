@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_utility/web_utility.dart';
+import 'package:responsive_utility/src/linear_direction.dart';
 
 /// A Flutter widget that displays a list of widgets in a linear layout (row or column).
 ///
@@ -118,12 +118,8 @@ class _LinearWidgetState extends State<LinearWidget> {
             spacedChildren.add(adjustedChildren[i]);
             if (i != adjustedChildren.length - 1) {
               spacedChildren.add(SizedBox(
-                width: widget.direction == LinearDirection.row
-                    ? widget.spacing
-                    : 0,
-                height: widget.direction == LinearDirection.column
-                    ? widget.spacing
-                    : 0,
+                width: widget.direction == LinearDirection.row ? widget.spacing : 0,
+                height: widget.direction == LinearDirection.column ? widget.spacing : 0,
               ));
             }
           }
@@ -137,9 +133,7 @@ class _LinearWidgetState extends State<LinearWidget> {
 
         // Return the appropriate layout based on the direction
         return SingleChildScrollView(
-          scrollDirection: widget.direction == LinearDirection.row
-              ? Axis.horizontal
-              : Axis.vertical,
+          scrollDirection: widget.direction == LinearDirection.row ? Axis.horizontal : Axis.vertical,
           physics: widget.scrollPhysics,
           child: widget.direction == LinearDirection.row
               ? Row(
