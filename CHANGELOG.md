@@ -1,10 +1,8 @@
-## [0.0.2] - 2024-06-07
-
-### Added
-- New property `exampleProperty` to enhance functionality.
-
-### Fixed
-- Issue with layout breaking with certain combinations of padding and margin.
+## [0.0.3] - 2024-06-07
 
 ### Changed
-- Improved performance of the `LinearWidget` by optimizing layout calculations.
+- Improved performance of the `Linear` by optimizing layout calculations.
+- Change `LinearWidget` to `Linear`
+
+#### Removed
+- Removed `expansion`, `childDecoration`, `childWidth` & `childHeight`
