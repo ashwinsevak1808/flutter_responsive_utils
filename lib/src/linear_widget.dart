@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_utility/src/linear_direction.dart';
 
-/// A Flutter widget that displays a list of widgets in a linear layout (row or column).
+/// A Flutter widget that displays a list of widgets in a linear layout (row, column, wrap, or grid).
 ///
-/// The [LinearWidget] provides various options for customizing the appearance and behavior
-/// of the linear layout, such as setting the main axis size, alignment, spacing, padding,
-/// margin, and child decoration.
-class LinearWidget extends StatefulWidget {
+/// The [Linear] provides various options for customizing the appearance and behavior
+/// of the linear layout, such as setting the main axis size, alignment, spacing, and child decoration.
+class Linear extends StatefulWidget {
   /// The direction of the linear layout, either row or column.
   final LinearDirection direction;
 
@@ -28,14 +27,8 @@ class LinearWidget extends StatefulWidget {
   /// The physics used for scrolling the linear layout if the children exceed the available space.
   final ScrollPhysics? scrollPhysics;
 
-  /// Whether all children should be expanded to fill the available space along the main axis.
-  final bool expandChildren;
-
   /// The padding around the linear layout.
   final EdgeInsets? padding;
-
-  /// The margin around the linear layout.
-  final EdgeInsets? margin;
 
   /// The spacing between each child widget.
   /// Default value is 0.0.
@@ -44,16 +37,10 @@ class LinearWidget extends StatefulWidget {
   /// Whether the order of the children should be reversed.
   final bool reverse;
 
-  /// The decoration for each child widget.
-  final BoxDecoration? childDecoration;
+  /// The number of columns for the grid layout. Ignored if [useGrid] is false.
+  final int gridColumns;
 
-  /// The width of each child widget when [childDecoration] is not null.
-  final double? childWidth;
-
-  /// The height of each child widget when [childDecoration] is not null.
-  final double? childHeight;
-
-  const LinearWidget({
+  const Linear({
     super.key,
     required this.direction,
     required this.children,
@@ -61,95 +48,67 @@ class LinearWidget extends StatefulWidget {
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.scrollPhysics,
-    this.expandChildren = false,
     this.padding,
-    this.margin,
     this.spacing = 0.0,
     this.reverse = false,
-    this.childDecoration,
-    this.childWidth,
-    this.childHeight,
+    this.gridColumns = 2,
   });
 
   @override
-  _LinearWidgetState createState() => _LinearWidgetState();
+  LinearState createState() => LinearState();
 }
 
-class _LinearWidgetState extends State<LinearWidget> {
+class LinearState extends State<Linear> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // Adjust child sizes if necessary
-        List<Widget> adjustedChildren = widget.children;
+    List<Widget> adjustedChildren = widget.children;
 
-        if (widget.expandChildren) {
-          // Ensure all children have equal sizes by wrapping them with Expanded
-          adjustedChildren = widget.children.map((child) {
-            return Expanded(child: child);
-          }).toList();
+    // Reverse the order of children if specified
+    if (widget.reverse) {
+      adjustedChildren = adjustedChildren.reversed.toList();
+    }
+
+    // Add spacing between children
+    if (widget.spacing > 0) {
+      List<Widget> spacedChildren = [];
+      for (int i = 0; i < adjustedChildren.length; i++) {
+        spacedChildren.add(adjustedChildren[i]);
+        if (i != adjustedChildren.length - 1) {
+          spacedChildren.add(SizedBox(
+            width: widget.direction == LinearDirection.row ? widget.spacing : 0,
+            height: widget.direction == LinearDirection.column ? widget.spacing : 0,
+          ));
         }
+      }
+      adjustedChildren = spacedChildren;
+    }
 
-        // Apply padding, margin, and decoration to each child
-        adjustedChildren = adjustedChildren.map((child) {
-          Widget decoratedChild = child;
-          if (widget.childDecoration != null) {
-            decoratedChild = Container(
-              width: widget.childWidth,
-              height: widget.childHeight,
-              decoration: widget.childDecoration,
-              child: child,
-            );
-          }
-          if (widget.padding != null || widget.margin != null) {
-            decoratedChild = Container(
-              padding: widget.padding,
-              margin: widget.margin,
-              child: decoratedChild,
-            );
-          }
-          return decoratedChild;
-        }).toList();
-
-        // Add spacing between children
-        if (widget.spacing > 0) {
-          List<Widget> spacedChildren = [];
-          for (int i = 0; i < adjustedChildren.length; i++) {
-            spacedChildren.add(adjustedChildren[i]);
-            if (i != adjustedChildren.length - 1) {
-              spacedChildren.add(SizedBox(
-                width: widget.direction == LinearDirection.row ? widget.spacing : 0,
-                height: widget.direction == LinearDirection.column ? widget.spacing : 0,
-              ));
-            }
-          }
-          adjustedChildren = spacedChildren;
-        }
-
-        // Reverse the order of children if specified
-        if (widget.reverse) {
-          adjustedChildren = adjustedChildren.reversed.toList();
-        }
-
-        // Return the appropriate layout based on the direction
-        return SingleChildScrollView(
-          scrollDirection: widget.direction == LinearDirection.row ? Axis.horizontal : Axis.vertical,
-          physics: widget.scrollPhysics,
-          child: widget.direction == LinearDirection.row
-              ? Row(
-                  mainAxisSize: widget.mainAxisSize,
-                  mainAxisAlignment: widget.mainAxisAlignment,
-                  crossAxisAlignment: widget.crossAxisAlignment,
-                  children: adjustedChildren,
-                )
-              : Column(
-                  mainAxisSize: widget.mainAxisSize,
-                  mainAxisAlignment: widget.mainAxisAlignment,
-                  crossAxisAlignment: widget.crossAxisAlignment,
-                  children: adjustedChildren,
-                ),
-        );
-      },
+    // Apply padding if specified
+    Widget content = Padding(
+      padding: widget.padding ?? EdgeInsets.zero,
+      child: _buildLayout(adjustedChildren),
     );
+
+    return SingleChildScrollView(
+      scrollDirection: widget.direction == LinearDirection.row ? Axis.horizontal : Axis.vertical,
+      physics: widget.scrollPhysics,
+      child: content,
+    );
+  }
+
+  Widget _buildLayout(List<Widget> children) {
+    return widget.direction == LinearDirection.row
+        ? Row(
+            mainAxisSize: widget.mainAxisSize,
+            mainAxisAlignment: widget.mainAxisAlignment,
+            crossAxisAlignment: widget.crossAxisAlignment,
+            children: children,
+          )
+        : Column(
+            mainAxisSize: widget.mainAxisSize,
+            mainAxisAlignment: widget.mainAxisAlignment,
+            crossAxisAlignment: widget.crossAxisAlignment,
+            children: children,
+          );
   }
 }
