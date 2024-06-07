@@ -1,6 +1,6 @@
 name: responsive_utility
 description: "A comprehensive utility package for creating responsive UIs in Flutter."
-version: 0.0.2
+version: 0.0.3
 homepage: "https://github.com/ashwinsevak1808/flutter_responsive_utils" # Replace this URL with your package's homepage URL
 
 environment:
