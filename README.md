@@ -16,7 +16,7 @@ Add the following line to your `pubspec.yaml` file under dependencies:
 
 ```yaml
 dependencies:
-  linear_widget: ^0.0.1
+  responsive_utility: ^0.0.3
 ```
 
 Then, run `flutter pub get` to install the package.
@@ -29,32 +29,36 @@ Here is a simple example of how to use the `LinearWidget`:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:linear_widget/linear_widget.dart';
+import 'package:responsive_utility/responsive_utility.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('LinearWidget Example')),
-        body: LinearWidget(
-          direction: LinearDirection.row,
-          children: [
-            Container(width: 50, height: 50, color: Colors.red),
-            Container(width: 50, height: 50, color: Colors.green),
-            Container(width: 50, height: 50, color: Colors.blue),
-          ],
-          spacing: 10.0,
-          padding: EdgeInsets.all(10.0),
-          margin: EdgeInsets.all(10.0),
-          childDecoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-          ),
-        ),
+      home: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('LinearWidget Example')),
+            body: Linear(
+              direction: MediaQuery.of(context).size.width <= 426
+                  ? LinearDirection.column
+                  : LinearDirection.row,
+              spacing: 10.0,
+              padding: const EdgeInsets.all(10.0),
+              children: [
+                Container(width: 300, height: 300, color: Colors.red),
+                Container(width: 300, height: 300, color: Colors.green),
+                Container(width: 300, height: 300, color: Colors.blue),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
